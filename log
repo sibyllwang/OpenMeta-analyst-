@@ -1,0 +1,6 @@
+10/09
+meta_globals.py in src:
+
+added "GLMM: Generalized Linear Mixed Effect Model" in ##binary metrics - BINARY_MERIC_NAMES
+added "GLMM" in ##binary metrics - BINARY_ONE_ARM_METRICS
+so user can choose "GLMM" when starting a new project. It does not seem to break the system, but it does not do anything either
