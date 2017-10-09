@@ -43,7 +43,7 @@ DEFAULT_DATASET_NAME = unicode("untitled_dataset", "utf-8")
 
 # Binary metrics
 BINARY_TWO_ARM_METRICS = ["OR", "RD", "RR", "AS", "YUQ", "YUY"]
-BINARY_ONE_ARM_METRICS = ["PR", "PLN", "PLO", "PAS", "PFT"]
+BINARY_ONE_ARM_METRICS = ["PR", "PLN", "PLO", "PAS", "PFT", "GLMM"]
 BINARY_METRIC_NAMES = {"OR":"Odds Ratio",
                        "RD":"Risk Difference",
                        "RR":"Risk Ratio",
@@ -55,6 +55,7 @@ BINARY_METRIC_NAMES = {"OR":"Odds Ratio",
                        "PLO":"Logit transformed Proportion",
                        "PAS":"Arcsine transformed Proportion",
                        "PFT":"Freeman-Tukey Transformed Proportion",
+		       "GLMM": "Generalized Linear Mixed-effect Model"
                        }
 
 # Continuous metrics
