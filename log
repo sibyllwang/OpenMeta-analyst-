@@ -2,5 +2,13 @@
 meta_globals.py in src:
 Added "GLMM: Generalized Linear Mixed Effect Model" in ##binary metrics - BINARY_MERIC_NAMES
 Added "GLMM" in ##binary metrics - BINARY_ONE_ARM_METRICS
-So user can choose "GLMM" when starting a new project. It does not seem to break the system, but it does not do anything 
-either.
+So user can choose "GLMM" when starting a new project. It does not seem to break the system, 
+but it does not do anything either.
+Updated: Although now I think about it, GLMM should not be added to "metrics", but "analysis method" when 
+creating forrest plot.
+Changes deleted in meta_globals.py
+
+BINARY_ONE_ARM_METRICS is called in meta_py_r.py and main_wizard.py
+
+binary_methods.r in src/R/openmetar/R
+Defines different methods but I want to know where these methods are called in the UI.
