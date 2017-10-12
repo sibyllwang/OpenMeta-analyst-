@@ -1,3 +1,23 @@
+10/12
+Found where openmetar functions are called in the GUI: src/meta_py_r.py, function "get_available_methods", 
+which get all available methods in openmetar by calling: method_list = execute_r_string("lsf.str('package:openmetar')").
+
+Added fake function "binary.fixed.glmm" in binary.methods.r, which is in fact just "binary.fixed.inv.var" with all ".inv.var"
+replaced by ".glmm". Include all accompanying functions. Rebuild openmetar, and "binary.fixed.glmm" showed up as a method 
+for proportion. 
+
+Now the GUI does work, commented out fake .glmm function. 
+Note that .glmm also shows up for proportion1 v. proportion2 data type.
+
+Next steps: 
+Write real .glmm function and make it available.
+Look at how the GUI decides to give options for certain methods after user choose a datatype. 
+First make sure the user would only have the choice of .glmm when data type is one proportion and metric is "PLO". 
+Then look how the function needs to be changed for two proportions (maybe a new function is needed, like .peta and .mh.)
+Look particularly how GUI decides whether to show .mh and .peta based on one vs. two proportions.
+
+
+
 10/09
 meta_globals.py in src:
 Added "GLMM: Generalized Linear Mixed Effect Model" in ##binary metrics - BINARY_MERIC_NAMES
@@ -12,3 +32,6 @@ BINARY_ONE_ARM_METRICS is called in meta_py_r.py and main_wizard.py
 
 binary_methods.r in src/R/openmetar/R
 Defines different methods but I want to know where these methods are called in the UI.
+
+
+
