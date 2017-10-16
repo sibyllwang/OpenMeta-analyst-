@@ -356,7 +356,7 @@ binary.fixed.glmm <- function(binary.data, params){
     plot.params.paths <- c("Forest Plot"=forest.plot.params.path)
     images <- c("Forest Plot"=forest.path)
     plot.names <- c("forest plot"="forest_plot")
-    pure.res$weights <- weights(res)
+    #pure.res$weights <- weights(res)
     results <- list("input_data"=binary.data,
                     "input_params"=input.params,
                     "images"=images,
