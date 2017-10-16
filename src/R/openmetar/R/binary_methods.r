@@ -321,8 +321,9 @@ binary.fixed.glmm <- function(binary.data, params){
                     "res"=res)
   } else {
     # call out to the metafor package
-    res<-rma.glmm(xi=binary.data@g1O1, ni=binary.data@g1O2, slab=binary.data@study.names,
-                 level=params$conf.level, digits=params$digits, method="FE", measure="PLO", 
+    res<-rma.glmm(xi=binary.data@g1O1, ni=binary.data@g1O1+binary.data@g1O2,
+                 slab=binary.data@study.names, level=params$conf.level,
+                 digits=params$digits, method="FE", measure="PLO",
                  add=c(params$adjust,params$adjust),
                  to=c(as.character(params$to), as.character(params$to)))
     pure.res <- res
@@ -356,7 +357,7 @@ binary.fixed.glmm <- function(binary.data, params){
     plot.params.paths <- c("Forest Plot"=forest.plot.params.path)
     images <- c("Forest Plot"=forest.path)
     plot.names <- c("forest plot"="forest_plot")
-    #pure.res$weights <- weights(res)
+    pure.res$weights <- ifelse(!"rma.glmm" %in% class(res), weights(res), NA)
     results <- list("input_data"=binary.data,
                     "input_params"=input.params,
                     "images"=images,
@@ -364,8 +365,8 @@ binary.fixed.glmm <- function(binary.data, params){
                     "plot_names"=plot.names,
                     "plot_params_paths"=plot.params.paths,
                     "res"=pure.res,
-                    "res.info"=binary.fixed.glmm.value.info()#,
-                    #"weights"=weights(res))
+                    "res.info"=binary.fixed.glmm.value.info(),
+                    "weights"=ifelse(!"rma.glmm" %in% class(res), weights(res), NA))
   }
   
   #references <- "this is a placeholder for binary fixed effect inv var reference"
