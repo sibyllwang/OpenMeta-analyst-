@@ -322,7 +322,8 @@ binary.fixed.glmm <- function(binary.data, params){
   } else {
     # call out to the metafor package
     res<-rma.glmm(xi=binary.data@g101, ni=binary.data@g102, slab=binary.data@study.names,
-                 level=params$conf.level, digits=params$digits, method="FE", add=c(params$adjust,params$adjust),
+                 level=params$conf.level, digits=params$digits, method="FE", measure="PLO", 
+                 add=c(params$adjust,params$adjust),
                  to=c(as.character(params$to), as.character(params$to)))
     pure.res <- res
     # Create forest plot and list to display summary of results
@@ -378,10 +379,11 @@ binary.fixed.glmm.value.info <- function() {
 }
 
 binary.fixed.glmm.is.feasible.for.funnel <- function() {
-  length(binary.data@g1O1)==length(binary.data@g1O2) &&
-    length(binary.data@g2O1)==0 &&
-    length(binary.data@g2O2)==0 &&
-    length(binary.data@g1O1) > 0
+  # length(binary.data@g1O1)==length(binary.data@g1O2) &&
+  #   length(binary.data@g2O1)==0 &&
+  #   length(binary.data@g2O2)==0 &&
+  #   length(binary.data@g1O1) > 0
+  TRUE
 }
 
 binary.fixed.glmm.parameters <- function(){
