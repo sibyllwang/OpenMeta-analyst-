@@ -321,7 +321,7 @@ binary.fixed.glmm <- function(binary.data, params){
                     "res"=res)
   } else {
     # call out to the metafor package
-    res<-rma.glmm(xi=binary.data@g101, ni=binary.data@g102, slab=binary.data@study.names,
+    res<-rma.glmm(xi=binary.data@g1O1, ni=binary.data@g1O2, slab=binary.data@study.names,
                  level=params$conf.level, digits=params$digits, method="FE", measure="PLO", 
                  add=c(params$adjust,params$adjust),
                  to=c(as.character(params$to), as.character(params$to)))
@@ -364,8 +364,8 @@ binary.fixed.glmm <- function(binary.data, params){
                     "plot_names"=plot.names,
                     "plot_params_paths"=plot.params.paths,
                     "res"=pure.res,
-                    "res.info"=binary.fixed.glmm.value.info(),
-                    "weights"=weights(res))
+                    "res.info"=binary.fixed.glmm.value.info()#,
+                    #"weights"=weights(res))
   }
   
   #references <- "this is a placeholder for binary fixed effect inv var reference"
@@ -375,7 +375,7 @@ binary.fixed.glmm <- function(binary.data, params){
 }
 
 binary.fixed.glmm.value.info <- function() {
-  rma.uni.value.info()
+  #rma.uni.value.info()
 }
 
 binary.fixed.glmm.is.feasible.for.funnel <- function() {
