@@ -299,6 +299,141 @@ binary.fixed.inv.var.overall <- function(results) {
     res <- results$res
 }
 
+
+
+
+#######################################TEST OF GUI###########################################
+###################################################
+# binary fixed effects -- glmm: binomial-mormal   #
+###################################################
+binary.fixed.glmm <- function(binary.data, params){
+  # assert that the argument is the correct type
+  if (!("BinaryData" %in% class(binary.data)))
+    stop("Binary data expected.")
+  
+  results <- NULL
+  input.params <- params
+  
+  if (length(binary.data@g1O1) == 1 || length(binary.data@y) == 1){
+    res <- get.res.for.one.binary.study(binary.data, params)
+    # Package res for use by overall method.
+    results <- list("Summary"=res,
+                    "res"=res)
+  } else {
+    # call out to the metafor package
+    res<-rma.glmm(xi=binary.data@g101, ni=binary.data@g102, slab=binary.data@study.names,
+                 level=params$conf.level, digits=params$digits, method="FE", add=c(params$adjust,params$adjust),
+                 to=c(as.character(params$to), as.character(params$to)))
+    pure.res <- res
+    # Create forest plot and list to display summary of results
+    metric.name <- pretty.metric.name(as.character(params$measure))
+    model.title <- paste("Binary Fixed-Effect Model - GLMM\n\nMetric: ", metric.name, sep="")
+    # Create results display tables
+    summary.disp <- create.summary.disp(binary.data, params, res, model.title)
+    forest.path <- paste(params$fp_outpath, sep="")
+    plot.data <- create.plot.data.binary(binary.data, params, res)
+    changed.params <- plot.data$changed.params
+    # list of changed params values
+    
+    
+    forest.plot.params.path <- ""
+    if (is.null(params$supress.output) || !params$supress.output) {
+      params.changed.in.forest.plot <- forest.plot(forest.data=plot.data, outpath=forest.path)
+      changed.params <- c(changed.params, params.changed.in.forest.plot)
+      params[names(changed.params)] <- changed.params
+      # update params values
+      forest.plot.params.path <- save.data(binary.data, res, params, plot.data)
+    }
+    
+    # Now we package the results in a dictionary (technically, a named
+    # vector). In particular, there are two fields that must be returned;
+    # a dictionary of images (mapping titles to image paths) and a list of texts
+    # (mapping titles to pretty-printed text). In this case we have only one
+    # of each.
+    
+    
+    plot.params.paths <- c("Forest Plot"=forest.plot.params.path)
+    images <- c("Forest Plot"=forest.path)
+    plot.names <- c("forest plot"="forest_plot")
+    pure.res$weights <- weights(res)
+    results <- list("input_data"=binary.data,
+                    "input_params"=input.params,
+                    "images"=images,
+                    "Summary"=capture.output.and.collapse(summary.disp),
+                    "plot_names"=plot.names,
+                    "plot_params_paths"=plot.params.paths,
+                    "res"=pure.res,
+                    "res.info"=binary.fixed.glmm.value.info(),
+                    "weights"=weights(res))
+  }
+  
+  #references <- "this is a placeholder for binary fixed effect inv var reference"
+  #references <- ""
+  #results[["References"]] <- references
+  results
+}
+
+binary.fixed.glmm.value.info <- function() {
+  rma.uni.value.info()
+}
+
+binary.fixed.glmm.is.feasible.for.funnel <- function() {
+  length(binary.data@g1O1)==length(binary.data@g1O2) &&
+    length(binary.data@g2O1)==0 &&
+    length(binary.data@g2O2)==0 &&
+    length(binary.data@g1O1) > 0
+}
+
+binary.fixed.glmm.parameters <- function(){
+  # parameters
+  apply_adjustment_to = c("only0", "all")
+  
+  params <- list("conf.level"="float",
+                 "digits"="int",
+                 "adjust"="float",
+                 "to"=apply_adjustment_to)
+  
+  # default values
+  defaults <- list("conf.level"=95, "digits"=3, "adjust"=.5, "to"="only0")
+  
+  var_order = c("conf.level", "digits", "adjust", "to")
+  
+  parameters <- list("parameters"=params, "defaults"=defaults, "var_order"=var_order)
+}
+
+binary.fixed.glmm.pretty.names <- function() {
+  pretty.names <- list("pretty.name"="Binary Fixed-Effect GLMM",
+                       "description" = "Performs fixed-effect meta-analysis with GLMM (binomial-normal model).",
+                       "conf.level"=list("pretty.name"="Confidence level", "description"="Level at which to compute confidence intervals"),
+                       "digits"=list("pretty.name"="Number of digits", "description"="Number of digits to display in results"),
+                       "adjust"=list("pretty.name"="Correction factor", "description"="Constant c that is added to the event counts."),
+                       "to"=list("pretty.name"="Add correction factor to", "description"="When Add correction factor is set to \"only 0\", the correction factor
+                                 is added to all cells of each two-by-two table that contains at leason one zero. When set to \"all\", the correction factor
+                                 is added to all two-by-two tables if at least one table contains a zero.")
+                       )
+}
+
+binary.fixed.glmm.overall <- function(results) {
+  # this parses out the overall from the computed result
+  res <- results$res
+}
+# #################################################TEST OF GUI##################################################
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ############################################
 #  binary fixed effects -- mantel haenszel #
 ############################################
